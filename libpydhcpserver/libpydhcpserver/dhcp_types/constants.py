@@ -280,7 +280,9 @@ DHCP_OPTIONS_TYPES = {
  150: "Unassigned", #TFTP server address
  151: "Unassigned", 152: "Unassigned", 153: "Unassigned", 154: "Unassigned",
  155: "Unassigned", 156: "Unassigned", 157: "Unassigned", 158: "Unassigned",
- 159: "Unassigned", 160: "Unassigned", 161: "Unassigned", 162: "Unassigned",
+ 159: "Unassigned", 160: "Unassigned", 
+ 161: TYPE_STRING,  #MUD URL
+ 162: "Unassigned",
  163: "Unassigned", 164: "Unassigned", 165: "Unassigned", 166: "Unassigned",
  167: "Unassigned", 168: "Unassigned", 169: "Unassigned", 170: "Unassigned",
  171: "Unassigned", 172: "Unassigned", 173: "Unassigned", 174: "Unassigned",

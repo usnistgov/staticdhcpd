@@ -152,6 +152,8 @@ For details on where the project is headed, check out the development feed at ht
 
 # NIST Development Plans
 
+**NOTE -- this is in the very early stages**
+
 Experimenting with support for Options 161 (MUD URLs support for IOT)
 
 ---
