@@ -150,6 +150,9 @@ All code is meticulously commented, as per Puukusoft standards. If you find an u
 ## Development plans ##
 For details on where the project is headed, check out the development feed at http://uguu.ca/tag/staticdhcpd/
 
+# NIST Development Plans
+
+Experimenting with support for Options 161 (MUD URLs support for IOT)
 
 ---
 
