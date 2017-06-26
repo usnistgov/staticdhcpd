@@ -62,19 +62,19 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         """
         DHCP Request processing with options 161.
         """
-        options = pkt.getOptions(161)
-        mudUri = ""
+        options = pkt.getOption(161)
+        mudUrl = ""
         # Convert the options into a string.
         for ch in options:
-            mudUri = mudInfo + chr(ch)
-        print "mudURI ", mudUri
+            mudUrl = mudUrl + chr(ch)
+        print "mudURI ", mudUrl
         # TODO...
         # A DHCP server that does process the MUD URL MUST
         # adhere to the process specified in [RFC2818] and [RFC5280] to
         # validate the TLS certificate of the web server hosting the MUD file.
         requestInfo = {}
         requestInfo['mac'] = mac
-        r  = requests.get(mudUri,data=requestInfo)
+        r  = requests.get(mudUrl,data=requestInfo)
         
         if r.status_code == 200:
             mudProfile = r.json()
