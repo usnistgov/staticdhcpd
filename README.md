@@ -156,6 +156,16 @@ For details on where the project is headed, check out the development feed at ht
 
 Experimenting with support for Options 161 (MUD URLs support for IOT)
 
+Make the following changes to /etc/dhcp/dhclient.conf
+
+    option mud-url code 161 = text;
+
+    # Set this to the location of your mud profile.
+
+    send mud-url = "https://10.0.0.3/gov/nist/mud/v1/toaster";
+
+copy conf.py to /etc/staticDHCPd/conf.py
+
 ---
 
 # Feedback #
