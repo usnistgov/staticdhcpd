@@ -25,11 +25,19 @@ GID = 0
 
 #The IP of the interface to use for DHCP traffic
 #DHCP_SERVER_IP = '192.168.56.101'
+
+# The host where this script is run
 DHCP_SERVER_IP = '10.0.0.1'
 
-MUD_CONTROLLER_HOST = '10.0.0.3'
+MUD_CONTROLLER_HOST = '10.0.0.3:8000'
 
-MUD_PROFILE_SERVER_HOST = '10.0.0.4'
+# The SDN controller controls the flow rules on the switch. We assume 
+# The DHCP server is configured with this information.
+SDN_CONTROLLER_HOST = '10.0.0.4:8000'
+
+SDN_CONTROLLER_URL = "http://" + SDN_CONTROLLER_HOST + "/installFlowRules"
+
+mudControllerUrlPrefix = "http://" + MUD_CONTROLLER_HOST + "/addMudProfile"
 
 #The database-engine to use
 #For details, see the configuration guide in the documentation.
@@ -47,14 +55,6 @@ def handleUnknowMAC(packet, method,mac,client_ip,relay_ip,port):
     return None
 
 def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
-    """
-    if not definition.ip[3] % 3: #The client's IP's fourth octet is a multiple of 3
-        packet.setOption('renewal_time_value', 60)
-    elif method.startswith('REQUEST:') and random.random() < 0.5:
-        packet.transformToDHCPNakPacket()
-    elif random.random() < 0.1:
-        return False
-    """
 
     print "method = ", method , " mac ", mac, "option ", pkt.getOption(161)
 
@@ -67,25 +67,26 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         # Convert the options into a string.
         for ch in options:
             mudUrl = mudUrl + chr(ch)
-        print "mudURI ", mudUrl
-        # TODO...
-        # A DHCP server that does process the MUD URL MUST
-        # adhere to the process specified in [RFC2818] and [RFC5280] to
-        # validate the TLS certificate of the web server hosting the MUD file.
-        requestInfo = {}
-        requestInfo['mac'] = mac
-        r  = requests.get(mudUrl,data=requestInfo)
+        print "mudURl ", mudUrl
         
-        if r.status_code == 200:
-            mudProfile = r.json()
-            print "mudProfile = ", json.dumps(mudProfile)
-            print "TODO -- send the json to our MUD controller here "
-            
+        mudProfileInfo = {}
+       
+
+        mudProfileInfo["sdn_controller_url"] = SDN_CONTROLLER_URL
+
+        mudProfileInfo["mud_url"] = mudUrl
+
+        # MUD Server URL - add MAC to it so that the server can know the MAC id.
+        # This is conveyed to the SDN controller
+        mudControllerUrl = mudControllerUrlPrefix + "/" + str(mac)
+        # Post this to the mud controller
+        response = requests.post(mudControllerUrl,data = json.dumps(mudProfileInfo))
+    
+        if response.status_code == 200 :
             pkt.setOption(161,"",False)
             return True
         else:
             return False
-        
-        
 
-    return True
+    else:
+        return True
