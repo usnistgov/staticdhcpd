@@ -37,7 +37,7 @@ SDN_CONTROLLER_HOST = '10.0.0.4:8000'
 
 SDN_CONTROLLER_URL = "http://" + SDN_CONTROLLER_HOST + "/installFlowRules"
 
-mudControllerUrlPrefix = "http://" + MUD_CONTROLLER_HOST + "/addMudProfile"
+mudServerUrlPrefix = "http://" + MUD_CONTROLLER_HOST + "/addMudProfile"
 
 #The database-engine to use
 #For details, see the configuration guide in the documentation.
@@ -78,9 +78,9 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
 
         # MUD Server URL - add MAC to it so that the server can know the MAC id.
         # This is conveyed to the SDN controller
-        mudControllerUrl = mudControllerUrlPrefix + "/" + str(mac)
-        # Post this to the mud controller
-        response = requests.post(mudControllerUrl,data = json.dumps(mudProfileInfo))
+        mudServerUrl = mudServerUrlPrefix + "/" + str(mac)
+            
+        response = requests.post(mudServerUrl,data = json.dumps(mudProfileInfo))
     
         if response.status_code == 200 :
             pkt.setOption(161,"",False)
