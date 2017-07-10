@@ -162,7 +162,7 @@ Make the following changes to /etc/dhcp/dhclient.conf
 
     # Set this to the location of your mud profile.
 
-    send mud-url = "https://10.0.0.3/gov/nist/mud/v1/toaster";
+    send mud-url = "https://10.0.0.4:8000/gov/nist/mud/v1/toaster";
 
 copy conf.py to /etc/staticDHCPd/conf.py
 
