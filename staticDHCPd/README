@@ -165,3 +165,10 @@ Step 5: Kill the process
     
 You now have proof that what you have in your hands is a functional,
 ready-to-customise DHCP server.
+
+# NIST modifications
+ 
+Added support for options 161 (MUD profile).
+
+- copy config.py to /etc/staticdhcpd/config.py
+- copy dhcp.ini to  /home/mininet 

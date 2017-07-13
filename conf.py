@@ -32,10 +32,10 @@ DHCP_SERVER_IP = '10.0.0.1'
 MUD_CONTROLLER_HOST = '10.0.0.3:8000'
 
 # The SDN controller controls the flow rules on the switch. We assume 
-# The DHCP server is configured with this information.
-SDN_CONTROLLER_HOST = '10.0.0.4:8000'
+# The DHCP server is configured with this information. CHANGE THIS IF NEEDED
+SDN_CONTROLLER_HOST = '192.168.56.101:8000'
 
-SDN_CONTROLLER_URL = "http://" + SDN_CONTROLLER_HOST + "/installFlowRules"
+SDN_CONTROLLER_URL = "http://" + SDN_CONTROLLER_HOST 
 
 mudServerUrlPrefix = "http://" + MUD_CONTROLLER_HOST + "/addMudProfile"
 
