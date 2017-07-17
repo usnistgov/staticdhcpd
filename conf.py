@@ -29,10 +29,12 @@ GID = 0
 # The host where this script is run
 DHCP_SERVER_IP = '10.0.0.1'
 
+# LOCATION mud the MUD server lives. Change if needed.
 MUD_CONTROLLER_HOST = '10.0.0.3:8000'
 
 # The SDN controller controls the flow rules on the switch. We assume 
 # The DHCP server is configured with this information. CHANGE THIS IF NEEDED
+
 SDN_CONTROLLER_HOST = '192.168.56.101:8000'
 
 SDN_CONTROLLER_URL = "http://" + SDN_CONTROLLER_HOST 
@@ -42,7 +44,7 @@ mudServerUrlPrefix = "http://" + MUD_CONTROLLER_HOST + "/addMudProfile"
 #The database-engine to use
 #For details, see the configuration guide in the documentation.
 DATABASE_ENGINE = 'INI'
-INI_FILE='/home/mininet/dhcp.ini'
+INI_FILE='/etc/staticDHCPd/dhcp.ini'
 
 AUTHORITATIVE=True
 
@@ -71,10 +73,15 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         
         mudProfileInfo = {}
        
-
         mudProfileInfo["sdn_controller_url"] = SDN_CONTROLLER_URL
 
         mudProfileInfo["mud_url"] = mudUrl
+
+        mudProfileInfo['dhcp_server_address'] = DHCP_SERVER_IP
+
+        mudProfileInfo['router'] = pkt.getOption('router')
+
+        mudProfileInfo['domain_name_servers'] = pkt.getOption('domain_name_servers')
 
         # MUD Server URL - add MAC to it so that the server can know the MAC id.
         # This is conveyed to the SDN controller
