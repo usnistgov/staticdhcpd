@@ -56,6 +56,12 @@ def handleUnknowMAC(packet, method,mac,client_ip,relay_ip,port):
     print "Handle Unknown MAC"
     return None
 
+def makeDottedDecimal(address):
+    retval = str(address[0]) 
+    for i in range(1,len(address)):
+        retval = retval + "." + str(address[i])
+    return retval
+
 def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
 
     print "method = ", method , " mac ", mac, "option ", pkt.getOption(161)
@@ -69,6 +75,8 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         # Convert the options into a string.
         for ch in options:
             mudUrl = mudUrl + chr(ch)
+
+        # TODO -- verify the mudUrl (must be signed by manufacturer).
         print "mudURl ", mudUrl
         
         mudProfileInfo = {}
@@ -78,13 +86,15 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         mudProfileInfo["mud_url"] = mudUrl
 
         mudProfileInfo['dhcp_server_address'] = DHCP_SERVER_IP
+        
+        mudProfileInfo['router'] = makeDottedDecimal(pkt.getOption('router'))
 
-        mudProfileInfo['router'] = pkt.getOption('router')
+        mudProfileInfo['domain_name_servers'] = makeDottedDecimal(pkt.getOption('domain_name_servers'))
 
-        mudProfileInfo['domain_name_servers'] = pkt.getOption('domain_name_servers')
+        mudProfileInfo['subnet_mask'] = makeDottedDecimal(pkt.getOption('subnet_mask'))
 
         # MUD Server URL - add MAC to it so that the server can know the MAC id.
-        # This is conveyed to the SDN controller
+
         mudServerUrl = mudServerUrlPrefix + "/" + str(mac)
             
         response = requests.post(mudServerUrl,data = json.dumps(mudProfileInfo))
