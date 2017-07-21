@@ -98,8 +98,17 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         mudServerUrl = mudServerUrlPrefix + "/" + str(mac)
             
         response = requests.post(mudServerUrl,data = json.dumps(mudProfileInfo))
-    
+
         if response.status_code == 200 :
+            responseJson = response.json()
+            cacheValidity = responseJson['cache-validity']
+            leaseTimeByteArray = pkt.getOption('ip_address_lease_time')
+            # Options are presented as byte arrays. Consider it to be a base 256 number. 
+            weights=[1<<24,1<<16,1<<8,1]
+            leaseTime = sum([leaseTimeByteArray[i] * weights[i] for i in range(0,4)])
+            print "leaseTime", leaseTime, "cacheValidity ", cacheValidity
+            if leaseTime > cacheValidity / 2 :
+                pkt.setOption('ip_address_lease_time',cacheValidity/2)
             pkt.setOption(161,"",False)
             return True
         else:
