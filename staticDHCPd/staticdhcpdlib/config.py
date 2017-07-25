@@ -78,7 +78,7 @@ _defaults.update({
  'DEBUG': False,
  'DAEMON': True,
  'SYSTEM_NAME': 'staticDHCPd',
- 'PID_FILE': None,
+ 'PID_FILE': "/var/run/staticdhcpd.pid",
 })
 
 #Server settings

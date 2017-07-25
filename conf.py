@@ -26,6 +26,8 @@ GID = 0
 #The IP of the interface to use for DHCP traffic
 #DHCP_SERVER_IP = '192.168.56.101'
 
+PID_FILE='/var/run/staticdhcpd.pid'
+
 # The host where this script is run
 DHCP_SERVER_IP = '10.0.0.1'
 
