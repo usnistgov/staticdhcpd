@@ -5,6 +5,8 @@
 from staticdhcpdlib.databases.generic import Definition
 import requests
 import json
+import os
+import sys
 
 #For a full overview of what these parameters mean, and to further customise
 #your system, please consult the configuration and scripting guides in the
@@ -32,14 +34,19 @@ PID_FILE='/var/run/staticdhcpd.pid'
 DHCP_SERVER_IP = '10.0.0.1'
 
 # LOCATION mud the MUD server lives. Change if needed.
-MUD_CONTROLLER_HOST = '10.0.0.3:8000'
+
+if os.environ.get("MUD_CONTROLLER_HOST") is None or os.environ.get("MUD_CONTROLLER_PORT") is None:
+    print "Please set MUD_CONTROLLER_HOST and MUD_CONTROLLER_PORT environment variables"
+    sys.exit()
+    os.exit()
+
+MUD_CONTROLLER_HOST = os.environ.get("MUD_CONTROLLER_HOST") + ":" + os.environ.get("MUD_CONTROLLER_PORT")
+
+#'10.0.0.3:8000'
 
 # The SDN controller controls the flow rules on the switch. We assume 
 # The DHCP server is configured with this information. CHANGE THIS IF NEEDED
 
-SDN_CONTROLLER_HOST = '192.168.56.101:8000'
-
-SDN_CONTROLLER_URL = "http://" + SDN_CONTROLLER_HOST 
 
 mudServerUrlPrefix = "http://" + MUD_CONTROLLER_HOST + "/addMudProfile"
 
@@ -82,8 +89,6 @@ def loadDHCPPacket(pkt, method, mac, definition, relay_ip, port, source_packet):
         print "mudURl ", mudUrl
         
         mudProfileInfo = {}
-       
-        mudProfileInfo["sdn_controller_url"] = SDN_CONTROLLER_URL
 
         mudProfileInfo["mud_url"] = mudUrl
 
