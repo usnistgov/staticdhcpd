@@ -1,0 +1,25 @@
+#Runs both libpydhcpserver and staticDHCPd's installation scripts
+cd libpydhcpserver
+/usr/bin/env python setup.py install --prefix /overlay/.local
+cd ..
+
+cd staticDHCPd
+/usr/bin/env python setup.py install --prefix /overlay/.local
+cd ..
+
+cp conf.py.openwrt /etc/staticDHCPd/conf.py
+
+cp dhcp.ini /etc/staticDHCPd/dhcp.ini
+
+/etc/init.d/dnsmasq disable
+
+/etc/init.d/dnsmasq stop
+
+cp staticdhcpd_service_openwrt /etc/init.d/staticdhcpd
+
+/etc/init.d/staticdhcpd stop
+
+/etc/init.d/staticdhcpd enable
+
+/etc/init.d/staticdhcpd start
+
