@@ -1,6 +1,10 @@
 #!/bin/sh /etc/rc.common
 
 START=50
+IOT_MUD_CONTROLLER_HOST=10.0.40.5
+IOT_MUD_CONTROOLLER_PORT=8000
+DHCP_SERVER_IP=192.168.1.1
+
 
 start() {
 

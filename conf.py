@@ -31,7 +31,7 @@ GID = 0
 PID_FILE='/var/run/staticdhcpd.pid'
 
 # The host where this script is run
-DHCP_SERVER_IP = '10.0.0.1'
+DHCP_SERVER_IP = os.environ.get("DHCP_SERVER_IP")
 
 # LOCATION mud the MUD server lives. Change if needed.
 
